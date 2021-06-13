@@ -1,0 +1,18 @@
+{
+  "ElectrodeParams": {
+    "NumOfChannels": 64,
+    "ActiveChannels": 32,
+    "DefaultAmplitude": 0.4000000059604645,
+    "DefaultAmplitudeCF": 0.4000000059604645,
+    "DefaultAmplitudeBF": 0.4000000059604645,
+    "GroundChannel": "B6",
+    "UseBodySurfacePadCalibration": false
+  },
+  "BodySensorDescription": {
+    "Channels": [ "A1", "A2", "A3", "A4", "A5", "A6", "B6" ],
+    "Amplitudes": [ -1.0, 1.0, -1.0, 1.0, -1.0, 1.0, 0.001 ],
+    "Frequencies": [ 15200.0, 15200.0, 16800.0, 16800.0, 18400.0, 18400.0, 20000.0 ],
+    "Phases": [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+  }
+
+}

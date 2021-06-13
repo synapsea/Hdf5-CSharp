@@ -1,0 +1,49 @@
+﻿using System;
+using System.Runtime.CompilerServices;
+using MessagePack;
+
+namespace HDF5CSharp.Example.DataTypes
+{
+    [Serializable]
+    [MessagePackObject(keyAsPropertyName: true)]
+    public class ElectrodeFrame
+    {
+        public (float Re, float Im)[] ComplexVoltageMatrix { get; set; }    // CHANNELS * CHANNELS entries
+        public (float Re, float Im)[] ComplexCurrentMatrix { get; set; }    // CHANNELS * CHANNELS entries
+
+        public long timestamp;  // timestamp in unix time (milliseconds since 1.1.1970 00:00:00 -  less accurate)
+
+        public UInt64 PacketId = UInt64.MaxValue; // serial number of packet
+
+        public UInt64 KalpaClock = UInt64.MaxValue;   // Kalpa timestamp in msec? (the most accurate)
+
+        public UInt64 SaturationMask;
+
+        public void GenerateDummyData(int electrodeNum)
+        {
+            ComplexVoltageMatrix = new ValueTuple<float, float>[electrodeNum * electrodeNum];
+            ComplexCurrentMatrix = new ValueTuple<float, float>[electrodeNum * electrodeNum];
+
+            Random r = new Random();
+
+            for (int i = 0; i < electrodeNum * electrodeNum; i++)
+            {
+                ComplexVoltageMatrix[i].Re = r.Next(0, 1000) / 1000.0f;
+                ComplexVoltageMatrix[i].Im = r.Next(0, 1000) / 1000.0f;
+                ComplexCurrentMatrix[i].Im = r.Next(0, 1000) / 1000.0f;
+                ComplexCurrentMatrix[i].Re = r.Next(0, 1000) / 1000.0f;
+            }
+
+            PacketId = 5;
+            KalpaClock = 1600;
+            SaturationMask = 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static byte[] Serialize(ElectrodeFrame fr) => MessagePackSerializer.Serialize(fr);
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ElectrodeFrame Deserialize(byte[] array) => MessagePackSerializer.Deserialize<ElectrodeFrame>(array);
+
+    }
+}
